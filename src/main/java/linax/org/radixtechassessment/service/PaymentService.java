@@ -31,7 +31,7 @@ public class PaymentService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
 
 
-        Double balance = Math.max(loan.getBalanceAmount() - payment.getAmount(), loan.getBalanceAmount() - payment.getAmount());
+        Double balance = Math.max(loan.getBalanceAmount() - payment.getAmount(), 0);
 
         loan.setBalanceAmount(balance);
         payment.setLoan(loanRepository.save(loan));
