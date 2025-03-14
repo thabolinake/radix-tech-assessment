@@ -1,6 +1,7 @@
 package linax.org.radixtechassessment.controller;
 
 import linax.org.radixtechassessment.dto.LoanDto;
+import linax.org.radixtechassessment.dto.PaymentDto;
 import linax.org.radixtechassessment.service.LoanService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,7 @@ public class LoanController {
 
     private final LoanService loanService;
 
-    @PutMapping("")
+    @PostMapping("")
     public ResponseEntity<LoanDto> save(@RequestBody LoanDto loanDto){
         return new ResponseEntity<>(loanService.save(loanDto), HttpStatus.CREATED);
     }
@@ -29,6 +30,11 @@ public class LoanController {
     @GetMapping("/{id}")
     public ResponseEntity<LoanDto> getAll(@PathVariable("id") Long id) {
         return new ResponseEntity<>(loanService.getOne(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/payments")
+    public ResponseEntity<List<PaymentDto>> getLoanPayments(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(loanService.getPayments(id), HttpStatus.OK);
     }
 
 }
