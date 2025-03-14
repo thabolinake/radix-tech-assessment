@@ -30,8 +30,7 @@ public class PaymentService {
         Payment payment = Optional.of(paymentRepository.save(paymentMapper.toEntity(paymentDto)))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
 
-
-        Double balance = Math.max(loan.getBalanceAmount() - payment.getAmount(), 0);
+        Double balance = loan.getBalanceAmount() - payment.getAmount();
 
         loan.setBalanceAmount(balance);
         payment.setLoan(loanRepository.save(loan));
