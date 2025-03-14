@@ -22,7 +22,7 @@ class LoanControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
-    void testCreateLoan() throws Exception {
+    void testSaveLoan() throws Exception {
 
         Loan loan = new Loan();
         loan.setAmount(100.0);
