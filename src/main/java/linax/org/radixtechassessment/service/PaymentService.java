@@ -36,8 +36,8 @@ public class PaymentService {
         Payment payment = Optional.of(paymentRepository.save(paymentMapper.toEntity(paymentDto)))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Payment record could not be created!"));
 
-        loan.setBalanceAmount(loan.getBalanceAmount() + payment.getAmount());
-        loanRepository.save(loan);
+        loan.setBalanceAmount(loan.getBalanceAmount() - payment.getAmount());
+        payment.setLoan(loanRepository.save(loan));
 
         return paymentMapper.toDto(payment);
     }

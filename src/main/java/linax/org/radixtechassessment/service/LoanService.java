@@ -24,7 +24,11 @@ public class LoanService {
     private final PaymentMapper paymentMapper;
 
     public LoanDto save(LoanDto loanDto) {
-        Loan loan = Optional.of(loanRepository.save(loanMapper.toEntity(loanDto)))
+
+        Loan newLoan = loanMapper.toEntity(loanDto);
+        newLoan.setBalanceAmount(loanDto.getAmount());
+
+        Loan loan = Optional.of(loanRepository.save(newLoan))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Loan record could not be created!"));
 
         return loanMapper.toDto(loanRepository.save(loan));
