@@ -1,6 +1,5 @@
 package linax.org.radixtechassessment.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import linax.org.radixtechassessment.dto.LoanDto;
 import linax.org.radixtechassessment.dto.PaymentDto;
 import linax.org.radixtechassessment.mapper.LoanMapper;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -25,25 +25,29 @@ public class LoanService {
 
     public LoanDto save(LoanDto loanDto) {
 
+        if (Objects.isNull(loanDto.getAmount()) || loanDto.getAmount() < 0 || Objects.isNull(loanDto.getTerm()) || loanDto.getTerm() < 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
         Loan newLoan = loanMapper.toEntity(loanDto);
         newLoan.setBalanceAmount(loanDto.getAmount());
 
         Loan loan = Optional.of(loanRepository.save(newLoan))
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Loan record could not be created!"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
 
         return loanMapper.toDto(loanRepository.save(loan));
     }
 
     public LoanDto getOne(Long id) {
         Loan loan = loanRepository.findById(id)
-                .orElseThrow( () -> new EntityNotFoundException("Loan with ID " + id + " not found!"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         return loanMapper.toDto(loan);
     }
 
     public List<PaymentDto> getPayments(Long id) {
         Loan loan = loanRepository.findById(id)
-                .orElseThrow( () -> new EntityNotFoundException("Loan with ID " + id + " not found!"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         return paymentMapper.toDtoList(loan.getPayments());
     }

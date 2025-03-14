@@ -1,5 +1,6 @@
 package linax.org.radixtechassessment.controller;
 
+import jakarta.validation.Valid;
 import linax.org.radixtechassessment.dto.PaymentDto;
 import linax.org.radixtechassessment.service.PaymentService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,7 @@ public class PaymentController {
     private final PaymentService paymentService;
 
     @PostMapping("")
-    public ResponseEntity<PaymentDto> save(@RequestBody PaymentDto paymentDto) {
+    public ResponseEntity<PaymentDto> save(@Valid @RequestBody PaymentDto paymentDto) {
         return new ResponseEntity<>(paymentService.save(paymentDto), HttpStatus.CREATED);
     }
 
