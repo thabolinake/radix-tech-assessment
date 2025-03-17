@@ -256,7 +256,7 @@ curl -X GET http://localhost:8095/api/payments
 #### The application uses the following configuration:
 
 #### Application Properties
->Server Port: 8095 (default)
+>Server Port: 8095
 
 >Database: H2 in-memory database
 
