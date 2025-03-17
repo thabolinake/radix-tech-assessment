@@ -30,12 +30,17 @@ public class LoanService {
         }
 
         Loan newLoan = loanMapper.toEntity(loanDto);
+
+        if (Objects.isNull(newLoan)) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Loan mapping failed");
+        }
+
         newLoan.setBalanceAmount(loanDto.getAmount());
 
         Loan loan = Optional.of(loanRepository.save(newLoan))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
 
-        return loanMapper.toDto(loanRepository.save(loan));
+        return loanMapper.toDto(loan);
     }
 
     public LoanDto getOne(Long id) {

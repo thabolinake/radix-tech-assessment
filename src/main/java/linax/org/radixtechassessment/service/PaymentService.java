@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -24,18 +25,27 @@ public class PaymentService {
 
     public PaymentDto save(PaymentDto paymentDto) {
 
+        if(Objects.isNull(paymentDto.getLoan())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Loan cannot be null");
+
+        }
         Loan loan = loanRepository.findById(paymentDto.getLoan().getId())
                 .orElseThrow( () -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
 
         Payment payment = Optional.of(paymentRepository.save(paymentMapper.toEntity(paymentDto)))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
 
-        Double balance = loan.getBalanceAmount() - payment.getAmount();
+        double balance = getReducedLoanBalanceAmount(loan.getBalanceAmount(), payment.getAmount());
 
-        loan.setBalanceAmount(balance);
+        loan.setBalanceAmount(balance < 0 ? 0 : balance);
         payment.setLoan(loanRepository.save(loan));
 
         return paymentMapper.toDto(payment);
+    }
+
+    public double getReducedLoanBalanceAmount(Double loanBalanceAmount, Double loanPaymentAmount) {
+        double newLoanBalanceAmount = loanBalanceAmount - loanPaymentAmount;
+        return newLoanBalanceAmount > 0 ? newLoanBalanceAmount : 0;
     }
 
     public List<PaymentDto> findAll() {

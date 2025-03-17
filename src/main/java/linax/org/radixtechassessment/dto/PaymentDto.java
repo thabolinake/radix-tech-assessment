@@ -16,6 +16,5 @@ public class PaymentDto {
 
     private LocalDateTime createdAt;
 
-    @NotNull(message = "Loan object cannot be null")
     private LoanDto loan;
 }

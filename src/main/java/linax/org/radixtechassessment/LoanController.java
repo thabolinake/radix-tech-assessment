@@ -1,4 +1,4 @@
-package linax.org.radixtechassessment.controller;
+package linax.org.radixtechassessment;
 
 import linax.org.radixtechassessment.dto.LoanDto;
 import linax.org.radixtechassessment.dto.PaymentDto;
