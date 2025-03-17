@@ -1,7 +1,6 @@
 package linax.org.radixtechassessment.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import linax.org.radixtechassessment.PaymentController;
 import linax.org.radixtechassessment.dto.LoanDto;
 import linax.org.radixtechassessment.dto.PaymentDto;
 import linax.org.radixtechassessment.service.LoanService;
@@ -56,9 +55,7 @@ class PaymentControllerTest {
         paymentDto.setLoan(null);
 
         // Act & Assert
-        ResponseStatusException exception = Assertions.assertThrows(ResponseStatusException.class, () -> {
-            paymentController.save(paymentDto);
-        });
+        ResponseStatusException exception = Assertions.assertThrows(ResponseStatusException.class, () -> paymentController.save(paymentDto));
 
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
     }

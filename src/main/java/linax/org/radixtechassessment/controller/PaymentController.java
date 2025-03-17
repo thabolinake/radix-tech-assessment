@@ -1,4 +1,4 @@
-package linax.org.radixtechassessment;
+package linax.org.radixtechassessment.controller;
 
 import jakarta.validation.Valid;
 import linax.org.radixtechassessment.dto.PaymentDto;
