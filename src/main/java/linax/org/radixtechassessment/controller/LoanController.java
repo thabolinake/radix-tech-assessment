@@ -1,5 +1,6 @@
 package linax.org.radixtechassessment.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import linax.org.radixtechassessment.dto.LoanDto;
 import linax.org.radixtechassessment.dto.PaymentDto;
 import linax.org.radixtechassessment.service.LoanService;
@@ -13,6 +14,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/loans")
+@Tag(name = "Loan Management API", description = "API for managing loans.")
 public class LoanController {
 
     private final LoanService loanService;
